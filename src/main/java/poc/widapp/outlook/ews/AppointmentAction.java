@@ -7,6 +7,7 @@ import microsoft.exchange.webservices.data.core.enumeration.property.LegacyFreeB
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
 import microsoft.exchange.webservices.data.core.service.item.Appointment;
 import microsoft.exchange.webservices.data.property.complex.AttendeeCollection;
+import microsoft.exchange.webservices.data.property.complex.ItemId;
 import microsoft.exchange.webservices.data.property.complex.MessageBody;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +21,10 @@ public class AppointmentAction {
 
     private final ExchangeService service;
 
-    public void executeEws(AppointmentDTO appointmentDTO) throws Exception {
+    public String executeEws(AppointmentDTO appointmentDTO) throws Exception {
         Appointment appointment = new Appointment(service);
 
-        appointment.setSubject("Test EWS");
+        appointment.setSubject(appointmentDTO.getSubject());
         appointment.setBody(MessageBody.getMessageBodyFromText("test appointment ews !"));
 
         setDuration(appointmentDTO, appointment);
@@ -32,7 +33,13 @@ public class AppointmentAction {
 
         appointment.save();
 
+        ItemId id = appointment.getId();
+
+
         log.info("appointment saved !");
+
+
+        return "id : " + id.getUniqueId();
     }
 
     private void setStatus(AppointmentDTO appointmentDTO, Appointment appointment) throws Exception {

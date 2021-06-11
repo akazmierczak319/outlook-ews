@@ -14,5 +14,5 @@ public class AppointmentDTO {
     private Date date;
     private int durationInMinutes;
     private String status;
-
+    private String subject;
 }
